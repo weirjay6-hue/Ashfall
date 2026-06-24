@@ -203,213 +203,150 @@ function drawTile(ctx, tx, ty, tile, sx, sy) {
   ctx.strokeStyle='rgba(0,0,0,0.06)';ctx.lineWidth=0.3;ctx.strokeRect(sx,sy,TS,TS);
 }
 
-const MINIMAP_TERRAIN_COLOR = {
-  plains:'#4a8a22', forest:'#1a5514', mountains:'#6a7050',
-  desert:'#b89428', swamp:'#2e5438', coast:'#2a6888',
-  ocean:'#0a3258', lake:'#124e7a',
+// ── Hex Minimap ──────────────────────────────────────────────────────────────
+const MM_S      = 9;                       // hex radius in px
+const MM_H      = MM_S * 1.5;             // col-to-col horizontal step
+const MM_V      = MM_S * Math.sqrt(3);    // row-to-row vertical step
+const MM_RAD    = 4;                       // visible radius (4 hexes each way)
+const MM_COLS   = MM_RAD * 2 + 1;         // 9 visible columns/rows
+const MM_PAD    = 5;
+const MM_HEADER = 18;
+const MM_FOOTER = 14;
+const MM_CW     = Math.ceil((MM_COLS - 1) * MM_H + MM_S * 2 + MM_PAD * 2);
+const MM_HEX_H  = Math.ceil((MM_COLS - 1) * MM_V + MM_V * 0.5 + MM_S * 2);
+const MM_CH     = MM_HEX_H + MM_PAD * 2 + MM_HEADER + MM_FOOTER;
+
+const MM_TERRAIN = {
+  plains:'#4a8830', forest:'#1a5c14', mountains:'#787868',
+  desert:'#b89228', swamp:'#3a6848', coast:'#2a7898',
+  ocean:'#0e3e72', lake:'#0e4a88',
 };
 
-function shadeColor(hex, factor) {
-  const n = parseInt(hex.replace('#',''), 16);
-  return `rgb(${Math.round(((n>>16)&0xff)*factor)},${Math.round(((n>>8)&0xff)*factor)},${Math.round((n&0xff)*factor)})`;
-}
-
-function mmRoundRect(ctx, x, y, w, h, r) {
+function mmHexPath(ctx, cx, cy, r) {
   ctx.beginPath();
-  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
-  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
-  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
-  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 3) * i;
+    if (i === 0) ctx.moveTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
+    else         ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
+  }
   ctx.closePath();
 }
 
-const MM_CELL = 12;
-const MM_RAD  = 6;
-const MM_COLS = MM_RAD * 2 + 1;
-const MM_PAD  = 4;
-const MM_HEADER = 20;
-const MM_FOOTER = 14;
-const MM_CW = MM_COLS * MM_CELL + MM_PAD * 2;
-const MM_CH = MM_COLS * MM_CELL + MM_HEADER + MM_FOOTER;
+function mmHexCenter(dx, dy, regionX) {
+  const absCol = regionX + dx;
+  const playerParityOffset = (regionX & 1) ? MM_V / 2 : 0;
+  const cellParityOffset   = (((absCol % 2) + 2) % 2) ? MM_V / 2 : 0;
+  return {
+    x: MM_PAD + MM_S + (MM_RAD + dx) * MM_H,
+    y: MM_PAD + MM_HEADER + MM_S + (MM_RAD + dy) * MM_V + (cellParityOffset - playerParityOffset),
+  };
+}
 
-function WorldMinimap({ world, player, chunkPos }) {
+function WorldMinimap({ world, player }) {
   const canvasRef = React.useRef(null);
+  const { regionX, regionY } = player?.location ?? { regionX: 0, regionY: 0 };
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !world || !player) return;
     canvas.width  = MM_CW;
     canvas.height = MM_CH;
-
     const ctx = canvas.getContext('2d');
-    const { regionX, regionY } = player.location;
 
-    // Build O(1) region lookup
     const regionMap = new Map();
     for (const r of world.regions) regionMap.set(`${r.x},${r.y}`, r);
 
-    // --- Panel background ---
-    ctx.save();
-    ctx.fillStyle = 'rgba(2,6,10,0.97)';
-    mmRoundRect(ctx, 0, 0, MM_CW, MM_CH, 8);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(200,160,55,0.8)';
-    ctx.lineWidth = 1.5;
-    mmRoundRect(ctx, 0, 0, MM_CW, MM_CH, 8);
-    ctx.stroke();
-    ctx.restore();
+    // Panel
+    ctx.fillStyle = 'rgba(2,6,10,0.96)';
+    ctx.beginPath(); ctx.roundRect(0, 0, MM_CW, MM_CH, 8); ctx.fill();
+    ctx.strokeStyle = 'rgba(200,158,50,0.75)'; ctx.lineWidth = 1.2; ctx.stroke();
 
-    // --- Header: "WORLD MAP" ---
-    ctx.font = 'bold 8px monospace';
-    ctx.fillStyle = 'rgba(210,175,60,0.95)';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('WORLD MAP', MM_CW / 2, MM_HEADER / 2 + 1);
-
-    // Divider line under header
-    ctx.strokeStyle = 'rgba(200,160,55,0.3)';
-    ctx.lineWidth = 0.5;
+    // Header
+    ctx.font = 'bold 7px monospace';
+    ctx.fillStyle = 'rgba(210,172,58,0.9)';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('MINIMAP', MM_CW / 2, MM_HEADER / 2 + 1);
+    ctx.strokeStyle = 'rgba(200,158,50,0.22)'; ctx.lineWidth = 0.5;
     ctx.beginPath();
-    ctx.moveTo(MM_PAD, MM_HEADER - 1);
-    ctx.lineTo(MM_CW - MM_PAD, MM_HEADER - 1);
+    ctx.moveTo(MM_PAD, MM_HEADER - 1); ctx.lineTo(MM_CW - MM_PAD, MM_HEADER - 1);
     ctx.stroke();
 
-    // --- Draw region cells ---
+    // Hex cells
     for (let dy = -MM_RAD; dy <= MM_RAD; dy++) {
       for (let dx = -MM_RAD; dx <= MM_RAD; dx++) {
-        const r  = regionMap.get(`${regionX + dx},${regionY + dy}`);
-        const rx = MM_PAD + (dx + MM_RAD) * MM_CELL;
-        const ry = MM_HEADER + (dy + MM_RAD) * MM_CELL;
+        const { x: cx, y: cy } = mmHexCenter(dx, dy, regionX);
+        const r = regionMap.get(`${regionX + dx},${regionY + dy}`);
 
         if (!r) {
-          // True void — no region exists here (world edge)
-          ctx.fillStyle = '#111418';
-          ctx.fillRect(rx, ry, MM_CELL, MM_CELL);
-          ctx.strokeStyle = 'rgba(40,50,60,0.5)';
-          ctx.lineWidth = 0.4;
-          ctx.strokeRect(rx, ry, MM_CELL, MM_CELL);
+          mmHexPath(ctx, cx, cy, MM_S - 0.5);
+          ctx.fillStyle = '#080c10'; ctx.fill();
           continue;
         }
 
-        const base = MINIMAP_TERRAIN_COLOR[r.terrain] || '#4a8a22';
+        const base = MM_TERRAIN[r.terrain] || MM_TERRAIN.plains;
 
+        mmHexPath(ctx, cx, cy, MM_S - 0.5);
         if (r.revealed) {
-          // Fully revealed — vivid terrain color
-          ctx.fillStyle = base;
-          ctx.fillRect(rx, ry, MM_CELL, MM_CELL);
-
-          // Danger red tint on high-danger tiles
+          ctx.fillStyle = base; ctx.fill();
           if (r.dangerLevel >= 4) {
-            ctx.fillStyle = `rgba(180,20,20,${(r.dangerLevel - 3) * 0.14})`;
-            ctx.fillRect(rx, ry, MM_CELL, MM_CELL);
+            ctx.fillStyle = `rgba(180,20,20,${(r.dangerLevel - 3) * 0.13})`; ctx.fill();
+          }
+          ctx.strokeStyle = 'rgba(0,0,0,0.55)'; ctx.lineWidth = 0.4; ctx.stroke();
+
+          if (r.settlements?.length) {
+            const sz = r.settlements[0].type === 'city' ? 2.8 : r.settlements[0].type === 'town' ? 2.2 : 1.5;
+            ctx.fillStyle = '#f5d020';
+            ctx.beginPath(); ctx.arc(cx + 3, cy - 3, sz, 0, Math.PI * 2); ctx.fill();
+          } else if (r.dungeons?.length) {
+            ctx.fillStyle = '#cc2020';
+            ctx.beginPath(); ctx.arc(cx + 3, cy - 3, 1.8, 0, Math.PI * 2); ctx.fill();
           }
         } else {
-          // Unexplored — show muted terrain color so the world shape is visible
-          ctx.fillStyle = shadeColor(base, 0.55);
-          ctx.fillRect(rx, ry, MM_CELL, MM_CELL);
-          // Light fog-of-war overlay — dim but not black
-          ctx.fillStyle = 'rgba(0,0,0,0.28)';
-          ctx.fillRect(rx, ry, MM_CELL, MM_CELL);
-          // Subtle cross-hatch lines to mark unexplored territory
-          ctx.strokeStyle = 'rgba(0,0,0,0.18)';
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(rx, ry); ctx.lineTo(rx + MM_CELL, ry + MM_CELL);
-          ctx.moveTo(rx + MM_CELL, ry); ctx.lineTo(rx, ry + MM_CELL);
-          ctx.stroke();
-        }
-
-        // Cell border
-        ctx.strokeStyle = r.revealed ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.25)';
-        ctx.lineWidth = 0.4;
-        ctx.strokeRect(rx, ry, MM_CELL, MM_CELL);
-
-        // Settlement dot — bright gold, only revealed
-        if (r.settlements?.length && r.revealed) {
-          const st = r.settlements[0].type;
-          const sz = st === 'city' ? 3 : st === 'town' ? 2.2 : 1.6;
-          ctx.fillStyle = '#f8e030';
-          ctx.beginPath();
-          ctx.arc(rx + MM_CELL - 2.5, ry + 2.5, sz, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Dungeon dot — red, only revealed
-        if (r.dungeons?.length && !r.settlements?.length && r.revealed) {
-          ctx.fillStyle = '#cc2828';
-          ctx.beginPath();
-          ctx.arc(rx + MM_CELL - 2.5, ry + 2.5, 1.8, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.fillStyle = 'rgba(8,14,20,0.94)'; ctx.fill();
+          ctx.strokeStyle = 'rgba(28,38,50,0.5)'; ctx.lineWidth = 0.4; ctx.stroke();
         }
       }
     }
 
-    // --- Compass labels (drawn on top of cells, at edges) ---
-    ctx.font = 'bold 7px sans-serif';
-    ctx.fillStyle = 'rgba(200,170,80,0.7)';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('N', MM_PAD + MM_COLS * MM_CELL / 2, MM_HEADER + 5);
-    ctx.fillText('S', MM_PAD + MM_COLS * MM_CELL / 2, MM_HEADER + MM_COLS * MM_CELL - 5);
-    ctx.textAlign = 'left';
-    ctx.fillText('W', MM_PAD + 2, MM_HEADER + MM_COLS * MM_CELL / 2);
-    ctx.textAlign = 'right';
-    ctx.fillText('E', MM_PAD + MM_COLS * MM_CELL - 2, MM_HEADER + MM_COLS * MM_CELL / 2);
+    // Player marker at exact center hex
+    const { x: pmx, y: pmy } = mmHexCenter(0, 0, regionX);
+    ctx.strokeStyle = 'rgba(248,200,50,0.85)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(pmx, pmy, MM_S - 2.5, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = '#f8c832';
+    ctx.beginPath(); ctx.arc(pmx, pmy, 2.8, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,248,220,0.9)'; ctx.lineWidth = 0.8; ctx.stroke();
 
-    // --- Player marker — offset within the region cell by chunk position ---
-    const cx = chunkPos ? chunkPos.x : 0;
-    const cy = chunkPos ? chunkPos.y : 0;
-    const pmx = MM_PAD + MM_RAD * MM_CELL + (cx + 0.5) / CHUNK_GRID * MM_CELL;
-    const pmy = MM_HEADER + MM_RAD * MM_CELL + (cy + 0.5) / CHUNK_GRID * MM_CELL;
-    ctx.strokeStyle = 'rgba(245,190,50,0.7)';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(pmx, pmy, 6.5, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.fillStyle = '#f0b030';
-    ctx.strokeStyle = 'rgba(255,248,220,0.9)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(pmx, pmy, 3.2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    // Compass
+    const midX = MM_CW / 2;
+    const midY = MM_HEADER + MM_PAD + (MM_HEX_H + MM_PAD * 2) / 2;
+    ctx.font = 'bold 6px sans-serif';
+    ctx.fillStyle = 'rgba(200,170,80,0.6)';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('N', midX, MM_HEADER + MM_PAD + 4);
+    ctx.fillText('S', midX, MM_CH - MM_FOOTER - MM_PAD - 4);
+    ctx.textAlign = 'left';  ctx.fillText('W', MM_PAD + 2, midY);
+    ctx.textAlign = 'right'; ctx.fillText('E', MM_CW - MM_PAD - 2, midY);
 
-    // --- Footer: current region name ---
+    // Footer
     const curR = regionMap.get(`${regionX},${regionY}`);
     if (curR) {
-      // Divider
-      ctx.strokeStyle = 'rgba(200,160,55,0.3)';
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = 'rgba(200,158,50,0.22)'; ctx.lineWidth = 0.5;
       ctx.beginPath();
-      ctx.moveTo(MM_PAD, MM_HEADER + MM_COLS * MM_CELL + 1);
-      ctx.lineTo(MM_CW - MM_PAD, MM_HEADER + MM_COLS * MM_CELL + 1);
+      ctx.moveTo(MM_PAD, MM_CH - MM_FOOTER); ctx.lineTo(MM_CW - MM_PAD, MM_CH - MM_FOOTER);
       ctx.stroke();
-
-      ctx.font = '7px sans-serif';
-      ctx.fillStyle = 'rgba(220,200,140,0.9)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.font = '7px sans-serif'; ctx.fillStyle = 'rgba(220,198,138,0.9)';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(
-        curR.name.length > 24 ? curR.name.slice(0,22) + '…' : curR.name,
-        MM_CW / 2,
-        MM_HEADER + MM_COLS * MM_CELL + MM_FOOTER / 2 + 1,
+        curR.name.length > 20 ? curR.name.slice(0, 18) + '…' : curR.name,
+        MM_CW / 2, MM_CH - MM_FOOTER / 2,
       );
     }
-
-  }, [world, player?.location?.regionX, player?.location?.regionY, chunkPos?.x, chunkPos?.y]);
+  }, [world, regionX, regionY]);
 
   return (
     <canvas
       ref={canvasRef}
-      style={{
-        position: 'absolute',
-        top: '38px',
-        right: '10px',
-        borderRadius: '8px',
-        pointerEvents: 'none',
-        zIndex: 6,
-        imageRendering: 'pixelated',
-      }}
+      style={{ position:'absolute', top:'38px', right:'10px', borderRadius:'8px', pointerEvents:'none', zIndex:6 }}
     />
   );
 }
@@ -618,7 +555,7 @@ export default function ZoneView() {
   const tryMove = useCallback((dx, dy) => {
     if (moveLockRef.current || !posRef.current || !chunk) return;
     moveLockRef.current = true;
-    setTimeout(() => { moveLockRef.current = false; }, 90);
+    setTimeout(() => { moveLockRef.current = false; }, 70);
 
     const nx = posRef.current.x + dx;
     const ny = posRef.current.y + dy;
@@ -838,9 +775,6 @@ export default function ZoneView() {
   return (
     <div ref={containerRef} tabIndex={0} style={{ position:'relative', flex:1, overflow:'hidden', background:'#0a120a', outline:'none' }}>
       <canvas ref={canvasRef} style={{ display:'block' }} />
-
-      {/* Isolated minimap overlay — own canvas, never touches game canvas */}
-      {!showWorldMap && <WorldMinimap world={world} player={player} chunkPos={chunkPos} />}
 
       <div style={{
         position:'absolute',top:0,left:0,right:0,
