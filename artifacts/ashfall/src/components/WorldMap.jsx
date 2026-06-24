@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import useGameStore from '../store/gameStore.js';
 import { getAdjacentRegions, TERRAIN_INFO } from '../engine/map.js';
 import { getWeatherForRegion, calcStaminaCost } from '../engine/world.js';
@@ -70,7 +70,9 @@ export default function WorldMap() {
   const enterSettlement = useGameStore(s => s.enterSettlement);
   const setView = useGameStore(s => s.setView);
   const enterDungeon = useGameStore(s => s.enterDungeon);
+  const currentView = useGameStore(s => s.currentView);
   const [selectedRegion, setSelectedRegion] = useState(null);
+  const [moveFlash, setMoveFlash] = useState(null); // direction of last move for flash
 
   if (!world || !player) return null;
 
@@ -85,8 +87,37 @@ export default function WorldMap() {
     if (region.x === regionX && region.y === regionY) return;
     if (region.terrain === 'ocean') return;
     travel(region.x, region.y);
-    setSelectedRegion(region);
+    setSelectedRegion(null);
+    setMoveFlash(Date.now());
+    setTimeout(() => setMoveFlash(null), 350);
   }
+
+  function handleKeyTravel(dx, dy) {
+    const targetX = regionX + dx;
+    const targetY = regionY + dy;
+    const region = world.regions.find(r => r.x === targetX && r.y === targetY);
+    if (!region || region.terrain === 'ocean' || region.terrain === 'lake') return;
+    travel(targetX, targetY);
+    setSelectedRegion(null);
+    setMoveFlash(Date.now());
+    setTimeout(() => setMoveFlash(null), 350);
+  }
+
+  useEffect(() => {
+    if (currentView !== 'world') return;
+    function onKeyDown(e) {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+      switch (e.key) {
+        case 'ArrowUp':    case 'w': case 'W': e.preventDefault(); handleKeyTravel(0, -1);  break;
+        case 'ArrowDown':  case 's': case 'S': e.preventDefault(); handleKeyTravel(0, 1);   break;
+        case 'ArrowLeft':  case 'a': case 'A': e.preventDefault(); handleKeyTravel(-1, 0);  break;
+        case 'ArrowRight': case 'd': case 'D': e.preventDefault(); handleKeyTravel(1, 0);   break;
+      }
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [regionX, regionY, world, currentView]);
+
 
   const adjacentDirs = getAdjacentRegions(world, regionX, regionY);
   const stamina = player.stamina?.current ?? 0;
@@ -117,7 +148,7 @@ export default function WorldMap() {
           <svg
             width={SVG_W}
             height={SVG_H}
-            style={{ display: 'block', filter: 'drop-shadow(0 3px 12px rgba(0,0,0,0.8))' }}
+            style={{ display: 'block', filter: 'drop-shadow(0 3px 12px rgba(0,0,0,0.8))', transition: 'opacity 0.15s', opacity: moveFlash ? 0.7 : 1 }}
           >
             <defs>
               <filter id="glow-amber" x="-50%" y="-50%" width="200%" height="200%">
@@ -386,8 +417,11 @@ export default function WorldMap() {
 
             {/* Quick travel */}
             <div style={{ padding: '6px 12px 8px' }}>
-              <div style={{ fontFamily: 'var(--font-title)', fontSize: '10px', color: 'var(--ash-amber)', marginBottom: '5px', letterSpacing: '0.1em' }}>
+              <div style={{ fontFamily: 'var(--font-title)', fontSize: '10px', color: 'var(--ash-amber)', marginBottom: '5px', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 QUICK TRAVEL
+                <span style={{ fontSize: '9px', color: 'var(--ash-text-dim)', fontFamily: 'var(--font-mono)', fontWeight: 'normal', letterSpacing: 0 }}>
+                  WASD / ↑↓←→
+                </span>
               </div>
               <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
                 {adjacentDirs.map(({ dir, region }) => {
