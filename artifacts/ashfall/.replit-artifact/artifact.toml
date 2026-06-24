@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/ashfall/"
+title = "Ashfall"
+version = "1.0.0"
+id = "artifacts/ashfall"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/ashfall/" ]
+localPort = 5173
+
+[services.development]
+run = "PORT=5173 BASE_PATH=/ashfall/ pnpm --filter @workspace/ashfall run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ashfall", "run", "build" ]
+publicDir = "artifacts/ashfall/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "5173"
+BASE_PATH = "/ashfall/"
