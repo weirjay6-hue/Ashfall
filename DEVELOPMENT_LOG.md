@@ -21,3 +21,13 @@
 
 - The focused engine compile could not run because javac is unavailable in this environment.
 - Job 005 remains IN_PROGRESS and no passing test result is being claimed.
+
+## 2026-08-15 — Job 005 completed
+
+- Verified deterministic on-demand world generation with the full Gradle test
+  suite and headless engine run.
+- Benchmarked 1,024 generated 32 × 32 chunks at about 12,944.8 chunks/second,
+  with a measured 31,578,736-byte heap delta after warm-up.
+- Updated the job record and project control files; the browser game remains
+  untouched.
+- GitHub push is pending secure authorization.

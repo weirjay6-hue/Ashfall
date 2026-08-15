@@ -2,26 +2,30 @@
 
     ## Next bounded task
 
-    **Job 005 — Basic World Generator**
+    **Job 006 — Chunk Streaming**
 
-    Read docs/jobs/JOB-005-basic-world-generator.md before inspecting implementation files.
+    Read docs/jobs/JOB-006-chunk-streaming.md before inspecting implementation files.
 
     ## Objective
 
-    Create a deterministic, seed-driven generator that can populate valid world/chunk data for later streaming and gameplay work without materializing the complete world or creating one file per cell.
+    Load and unload only the chunks required by a bounded visibility/request
+    window while preserving the existing coordinate, storage, and generator
+    contracts.
 
     ## Required non-goals
 
-    - Do not implement chunk streaming; that is Job 006.
-    - Do not implement player movement, combat, inventory, or the opening map/lore flow.
+    - Do not implement player movement, rendering, camera, combat, or inventory.
+    - Do not implement the opening map/lore flow.
     - Do not rewrite the existing browser game.
     - Do not build the complete simulation, economy, or NPC life system.
 
     ## Session rule
 
-    Implement only Job 005, then test, benchmark where relevant, update the control files, commit, push, and stop. If the user explicitly chooses Job 006 instead, switch only after reading docs/jobs/JOB-006-chunk-streaming.md and record the decision in the state files. Job 019 remains a separate later scope.
+    Implement only Job 006, then test, benchmark where relevant, update the
+    control files, commit, push, and stop. Job 019 remains a separate later
+    scope.
     
 
 ## Current implementation status
 
-The deterministic generator and focused tests have been added. The repository must remain IN_PROGRESS until the engine test suite and relevant benchmark are run in a full checkout.
+    Job 005 is benchmarked and verified. Job 006 is now the next bounded task.

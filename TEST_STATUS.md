@@ -12,18 +12,20 @@
 
     ## This update
 
-    The current control-layer update changes documentation only. Tests were not rerun because no game or engine source was accessed or modified.
+    Job 005 verification completed in the Java-enabled checkout:
+
+    - `gradle test --no-daemon` — PASS.
+    - `gradle run --no-daemon --args="--headless --ticks=120 --seed=ashfall-dev --chunk-size=32 --grid-width=128 --grid-height=128"` — PASS.
+    - Representative benchmark — PASS: 1,024 generated 32 × 32 chunks in
+      79.105 ms, about 12,944.8 chunks/second, with a 31,578,736-byte measured
+      heap delta after warm-up.
 
     ## Rule for future jobs
 
     A job is not complete merely because it compiles. Run the job’s unit tests, relevant integration checks, and benchmark where appropriate. Record exact commands and outcomes here, then update PROJECT_STATE.md and the job record.
     
 
-## Job 005 status
+    ## Job 005 status
 
-Focused generator tests have been added but are not yet marked passing. Run the full engine test suite and a representative generation benchmark before changing Job 005 to TESTED.
-
-
-## Latest verification attempt
-
-A temporary compile of the engine subsystem was attempted without importing the repository. It could not start because javac is not installed in the current environment. No Java compiler error was produced. Run the repository’s Gradle test workflow in a Java-enabled checkout before marking Job 005 TESTED.
+    Job 005 is BENCHMARKED. The full test suite, headless engine run, and
+    representative generation benchmark all pass.

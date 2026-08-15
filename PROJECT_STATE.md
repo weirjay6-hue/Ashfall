@@ -3,10 +3,10 @@
     ## Snapshot
 
     - Phase: Phase 1 — Engine Foundation.
-    - Last tested implementation: Job 004 — Chunk Storage.
-    - Current job: Job 005 — Basic World Generator (IN_PROGRESS).
+    - Last tested implementation: Job 005 — Basic World Generator.
+    - Current job: Job 005 — Basic World Generator (BENCHMARKED).
 - Current orientation status: implementation is limited to the engine world-generation subsystem; the browser game remains untouched.
-    - Next roadmap job: Job 005 — Basic World Generator.
+    - Next roadmap job: Job 006 — Chunk Streaming.
     - Existing Job 006: Chunk Streaming.
     - Separate planned Job 019: Opening World Sequence.
 
@@ -19,18 +19,19 @@
     - Job 002 World Coordinate System.
     - Job 003 World Grid.
     - Job 004 Chunk Storage.
+    - Job 005 Basic World Generator.
 
     ## Active systems
 
     - Browser game: world map, wilderness, towns, combat, dungeons, inventory, shops, quests, saves, and world ticks.
-    - Engine: configuration, lifecycle, fixed timestep, deterministic RNG, logging, headless execution, performance counters, finite world grid, and sparse chunk storage.
+    - Engine: configuration, lifecycle, fixed timestep, deterministic RNG, logging, headless execution, performance counters, finite world grid, sparse chunk storage, and deterministic on-demand world generation.
     - Permanent handoff: root control files plus docs/.
 
     ## Known limitations
 
-    - The engine has no completed world generator, streaming policy, player, rendering, or engine persistence yet.
+    - The engine has no completed streaming policy, player, rendering, or engine persistence yet.
     - Browser game and Java engine remain separate until a useful vertical-slice boundary is reached.
-    - Job 005 and Job 006 need explicit job records before implementation begins; those records are now present and planned.
+    - Job 006 remains the next bounded engine job.
     - The generated opening/map/lore requirement is intentionally separate as Job 019.
 
     ## Non-negotiable boundaries
@@ -41,6 +42,7 @@
     - Do not mark a job complete without tests, documentation, a reviewed diff, and a commit.
     
 
-## Verification blocker
+    ## Verification
 
-The focused Job 005 source and tests are committed, but this environment does not provide javac, so the engine test suite and compile check remain pending in a full Java/Gradle checkout.
+    Job 005 passed the full engine test suite, the headless run, and a
+    representative generation benchmark. The browser game remains untouched.

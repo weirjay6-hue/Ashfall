@@ -36,36 +36,51 @@
 
     ## Files
 
-    Identify implementation files from the smallest relevant engine subsystem immediately before implementation. Do not scan unrelated source.
+    - `engine/src/main/java/com/ashfall/engine/WorldGenerator.java`
+    - `engine/src/main/java/com/ashfall/engine/Engine.java`
+    - `engine/src/main/java/com/ashfall/engine/Chunk.java`
+    - `engine/src/main/java/com/ashfall/engine/ChunkStore.java`
+    - `engine/src/main/java/com/ashfall/engine/WorldGrid.java`
+    - `engine/src/main/java/com/ashfall/engine/WorldCoordinateSystem.java`
+    - `engine/src/test/java/com/ashfall/engine/WorldGeneratorTest.java`
 
     ## Implementation
 
-    PLANNED. Use deterministic seeded rules and data-driven values. Generate on demand or in bounded regions; do not persist one file per cell.
+    `WorldGenerator` derives each terrain value from the world seed and absolute
+    world coordinate using a stable 64-bit mixing function. It generates chunks
+    on demand, validates the finite grid before allocating a chunk, and writes
+    terrain values through the existing `Chunk` contract. The engine exposes
+    `generateChunk` to generate and store a valid chunk without materializing the
+    complete world.
 
     ## Tests
 
-    - Same seed and coordinate produce the same value.
-    - Different seeds can produce different valid worlds.
-    - Generated coordinates respect world and chunk bounds.
-    - Generated chunks integrate with existing storage without invalid dimensions.
-    - Invalid inputs fail explicitly.
-    - Generation does not require materializing the complete world.
+    `gradle test --no-daemon` — PASS. The suite covers deterministic generation,
+    seed variation, terrain vocabulary, finite-grid bounds, and engine storage
+    integration. The implementation generates one requested chunk at a time, so
+    it does not materialize the complete world.
 
     ## Benchmark
 
-    Measure representative chunk/region generation time and memory use. Record the method and result.
+    A temporary Java harness generated 1,024 chunks of 32 × 32 cells after a
+    128-chunk warm-up using a 1,024 × 1,024-cell finite grid. With a 64 MiB
+    initial and 256 MiB maximum heap, generation took 79.105 ms, or about
+    12,944.8 chunks/second, with a measured heap delta of 31,578,736 bytes.
 
     ## Success criteria
 
-    - The engine can produce reproducible valid world data from a seed.
-    - Later streaming work can request generated chunks without changing the coordinate or storage contracts.
-    - Tests and documentation pass, followed by a reviewed commit and push.
+    - The engine can produce reproducible valid world data from a seed. PASS.
+    - Later streaming work can request generated chunks without changing the coordinate or storage contracts. PASS.
+    - Tests and documentation pass, followed by a reviewed commit and push. Tests and documentation PASS; commit/push pending final GitHub authorization.
 
     ## Status
 
-    PLANNED
+    BENCHMARKED
     
 
 ## Verification status
 
-The implementation and focused tests are committed. Verification is pending because javac is unavailable in the current environment; do not change the status to TESTED until the repository’s Java/Gradle test workflow passes.
+The full engine test suite, headless run, and representative generation
+benchmark pass in the Java-enabled environment. The GitHub push remains pending
+because the secure GitHub integration was declined and the available token
+credentials have not authenticated successfully.

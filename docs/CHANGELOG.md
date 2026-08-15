@@ -19,3 +19,6 @@
 - Implemented and tested Job 004 Chunk Storage with sparse coordinate-keyed
   chunks, fixed-size cell buffers, deterministic listing, and explicit bounds
   validation.
+- Implemented and benchmarked Job 005 Basic World Generator with deterministic
+  seed-and-coordinate terrain generation, finite-grid validation, on-demand
+  chunk generation, and engine storage integration.
