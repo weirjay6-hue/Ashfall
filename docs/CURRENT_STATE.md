@@ -6,8 +6,8 @@ Phase 1 — Engine Foundation.
 
 ## Current job
 
-Job 002 — World Coordinate System is implemented and tested. The next job is
-Job 003 — World Grid.
+Job 003 — World Grid is implemented and tested. The next job is Job 004 —
+Chunk Storage.
 
 ## Completed
 
@@ -16,6 +16,7 @@ Job 003 — World Grid.
 - Archive branch created before engine work.
 - Job 001 Java/Gradle foundation.
 - Job 002 world coordinate system.
+- Job 003 world grid.
 
 ## Active systems
 
@@ -26,8 +27,8 @@ Job 003 — World Grid.
 
 ## Known limitations
 
-- Java engine has coordinates but no world grid, player, rendering, or
-  persistence yet.
+- Java engine has coordinates and a finite world grid but no chunk storage,
+  player, rendering, or persistence yet.
 - Gradle build uses Java 17-compatible source settings.
 - Browser game and Java engine are intentionally separate until the engine
   reaches a useful vertical-slice boundary.
@@ -38,6 +39,8 @@ Job 003 — World Grid.
 - `gradle run --args="--headless --ticks=120 --seed=ashfall-dev"`: passing.
 - `gradle run --args="--headless --ticks=120 --seed=ashfall-dev --chunk-size=32"`:
   passing.
+- `gradle run --args="--headless --ticks=120 --seed=ashfall-dev --chunk-size=32 --grid-width=128 --grid-height=128"`:
+  passing.
 - Browser game checks remain available through the existing pnpm scripts.
 
 ## GitHub push
@@ -47,4 +50,4 @@ preserved on `origin/archive/pre-bootstrap-20260815`.
 
 ## Next job
 
-Job 003 — World Grid.
+Job 004 — Chunk Storage.

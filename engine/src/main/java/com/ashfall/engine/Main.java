@@ -11,6 +11,8 @@ public final class Main {
         boolean headless = false;
         int ticks = 60;
         int chunkSize = 32;
+        int gridWidth = 128;
+        int gridHeight = 128;
         long seed = 0x41534846414C4CL;
 
         for (String arg : args) {
@@ -22,12 +24,23 @@ public final class Main {
                 seed = parseSeed(arg.substring("--seed=".length()));
             } else if (arg.startsWith("--chunk-size=")) {
                 chunkSize = Integer.parseInt(arg.substring("--chunk-size=".length()));
+            } else if (arg.startsWith("--grid-width=")) {
+                gridWidth = Integer.parseInt(arg.substring("--grid-width=".length()));
+            } else if (arg.startsWith("--grid-height=")) {
+                gridHeight = Integer.parseInt(arg.substring("--grid-height=".length()));
             } else {
                 throw new IllegalArgumentException("Unknown argument: " + arg);
             }
         }
 
-        Configuration configuration = new Configuration(seed, 20, headless, chunkSize);
+        Configuration configuration = new Configuration(
+            seed,
+            20,
+            headless,
+            chunkSize,
+            gridWidth,
+            gridHeight
+        );
         Engine engine = new Engine(configuration);
         try {
             if (headless) {

@@ -12,6 +12,7 @@ public final class Engine {
     private final Configuration configuration;
     private final DeterministicRng rng;
     private final WorldCoordinateSystem worldCoordinates;
+    private final WorldGrid worldGrid;
     private final PerformanceCounters counters = new PerformanceCounters();
     private final FixedTimestepLoop loop;
     private boolean running;
@@ -20,6 +21,11 @@ public final class Engine {
         this.configuration = configuration;
         this.rng = new DeterministicRng(configuration.seed());
         this.worldCoordinates = new WorldCoordinateSystem(configuration.chunkSize());
+        this.worldGrid = new WorldGrid(
+            new WorldCoordinate(-configuration.gridWidth() / 2L, -configuration.gridHeight() / 2L),
+            configuration.gridWidth(),
+            configuration.gridHeight()
+        );
         this.loop = new FixedTimestepLoop(configuration.tickRate(), this::tick);
     }
 
@@ -71,6 +77,10 @@ public final class Engine {
         return worldCoordinates;
     }
 
+    public WorldGrid worldGrid() {
+        return worldGrid;
+    }
+
     public PerformanceCounters counters() {
         return counters;
     }
@@ -83,7 +93,7 @@ public final class Engine {
         if (!running) {
             return;
         }
-        // Deliberately empty in Job 001: this is the lifecycle seam for
-        // world, simulation, and gameplay systems added by later jobs.
+        // The grid is intentionally passive in Job 003. Generation and
+        // simulation systems will consume it in later jobs.
     }
 }

@@ -13,3 +13,6 @@
 - Implemented and tested Job 002 World Coordinate System with canonical world,
   chunk, local, and cell-address types, negative-coordinate-safe conversion,
   and configurable chunk size.
+- Implemented and tested Job 003 World Grid with finite bounds, stable
+  row-major indexing, configurable dimensions, and explicit out-of-bounds
+  behavior.

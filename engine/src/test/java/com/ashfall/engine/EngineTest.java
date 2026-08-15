@@ -13,6 +13,8 @@ class EngineTest {
 
         assertFalse(engine.running());
         assertEquals(32, engine.worldCoordinates().chunkSize());
+        assertEquals(128, engine.worldGrid().width());
+        assertEquals(128, engine.worldGrid().height());
         engine.runHeadless(12);
         assertTrue(engine.running());
         assertEquals(12, engine.counters().ticks());
