@@ -4,7 +4,8 @@
 
     - Phase: Phase 1 — Engine Foundation.
     - Last tested implementation: Job 004 — Chunk Storage.
-    - Current orientation status: documentation-only continuation controls are in place; no game source is being changed by this control update.
+    - Current job: Job 005 — Basic World Generator (IN_PROGRESS).
+- Current orientation status: implementation is limited to the engine world-generation subsystem; the browser game remains untouched.
     - Next roadmap job: Job 005 — Basic World Generator.
     - Existing Job 006: Chunk Streaming.
     - Separate planned Job 019: Opening World Sequence.

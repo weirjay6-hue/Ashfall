@@ -18,3 +18,7 @@
 
     A job is not complete merely because it compiles. Run the job’s unit tests, relevant integration checks, and benchmark where appropriate. Record exact commands and outcomes here, then update PROJECT_STATE.md and the job record.
     
+
+## Job 005 status
+
+Focused generator tests have been added but are not yet marked passing. Run the full engine test suite and a representative generation benchmark before changing Job 005 to TESTED.

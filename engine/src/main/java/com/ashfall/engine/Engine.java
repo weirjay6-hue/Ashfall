@@ -14,6 +14,7 @@ public final class Engine {
     private final WorldCoordinateSystem worldCoordinates;
     private final WorldGrid worldGrid;
     private final ChunkStore chunkStore;
+    private final WorldGenerator worldGenerator;
     private final PerformanceCounters counters = new PerformanceCounters();
     private final FixedTimestepLoop loop;
     private boolean running;
@@ -28,6 +29,7 @@ public final class Engine {
             configuration.gridHeight()
         );
         this.chunkStore = new ChunkStore(worldGrid, worldCoordinates);
+        this.worldGenerator = new WorldGenerator(configuration.seed(), worldCoordinates, worldGrid);
         this.loop = new FixedTimestepLoop(configuration.tickRate(), this::tick);
     }
 
@@ -85,6 +87,16 @@ public final class Engine {
 
     public ChunkStore chunkStore() {
         return chunkStore;
+    }
+
+    public WorldGenerator worldGenerator() {
+        return worldGenerator;
+    }
+
+    public Chunk generateChunk(ChunkCoordinate coordinate) {
+        Chunk generated = worldGenerator.generate(coordinate);
+        chunkStore.put(generated);
+        return generated;
     }
 
     public PerformanceCounters counters() {

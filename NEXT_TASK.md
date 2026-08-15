@@ -21,3 +21,7 @@
 
     Implement only Job 005, then test, benchmark where relevant, update the control files, commit, push, and stop. If the user explicitly chooses Job 006 instead, switch only after reading docs/jobs/JOB-006-chunk-streaming.md and record the decision in the state files. Job 019 remains a separate later scope.
     
+
+## Current implementation status
+
+The deterministic generator and focused tests have been added. The repository must remain IN_PROGRESS until the engine test suite and relevant benchmark are run in a full checkout.
