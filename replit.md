@@ -1,9 +1,13 @@
-# [Project name]
+# ASHFALL
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+ASHFALL is a single-character open-world RPG with a living browser game and a
+separately tested Java/Gradle simulation foundation.
 
 ## Run & Operate
 
+- `gradle test` — run Java engine unit tests
+- `gradle run --args="--headless --ticks=120 --seed=ashfall-dev"` — run the headless engine
+- `pnpm --filter @workspace/ashfall run dev` — run the Ashfall browser game
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
@@ -22,23 +26,35 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/ashfall/` — browser game and playable surface
+- `engine/` — Java engine foundation
+- `docs/` — permanent design and development handoff memory
+- `attached_assets/` — source briefs
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The browser game remains intact while the Java engine is built in verified jobs.
+- Simulation uses an explicit seeded RNG and fixed timestep from the first job.
+- Architecture choices are measured rather than assuming an ECS or dense arrays.
+- The vertical slice is prioritized before large-world simulation.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+The browser game supports character creation, exploration, combat, dungeons,
+towns, NPC interactions, inventory, equipment, quests, trading, and save/load.
+The Java engine is the foundation for a future persistent living world.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Save meaningful progress in small Git commits and push to GitHub when authorized.
+- Treat the uploaded master bootstrap prompt and `docs/CURRENT_STATE.md` as the
+  source of continuity for fresh sessions.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Implement one job at a time; update `CURRENT_STATE.md` and `CHANGELOG.md`
+  before committing.
+- Do not replace the existing browser game with unfinished engine work.
 
 ## Pointers
 

@@ -1,31 +1,28 @@
 kind = "web"
 previewPath = "/ashfall/"
 title = "Ashfall"
+description = "A single-character survival RPG where you explore a living world, discover danger, gather resources, fight or escape, return to town, trade, equip, and venture out again."
 version = "1.0.0"
 id = "artifacts/ashfall"
 router = "path"
 
-[[integratedSkills]]
-name = "react-vite"
-version = "1.0.0"
-
 [[services]]
 name = "web"
 paths = [ "/ashfall/" ]
-localPort = 5173
+localPort = 25722
 
 [services.development]
-run = "PORT=5173 BASE_PATH=/ashfall/ pnpm --filter @workspace/ashfall run dev"
+run = "pnpm --filter @workspace/ashfall run dev"
 
 [services.production]
 build = [ "pnpm", "--filter", "@workspace/ashfall", "run", "build" ]
-publicDir = "artifacts/ashfall/dist/public"
 serve = "static"
+publicDir = "artifacts/ashfall/dist/public"
 
 [[services.production.rewrites]]
 from = "/*"
 to = "/index.html"
 
 [services.env]
-PORT = "5173"
+PORT = "25722"
 BASE_PATH = "/ashfall/"

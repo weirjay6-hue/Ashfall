@@ -1,0 +1,1830 @@
+Yes. What you want now is a single master bootstrap prompt that you can give a fresh Replit AI session whenever needed. It should make the repository self-documenting so that you don’t depend on this chat, a single Replit session, or the AI remembering anything.
+
+The key change I would make to everything above is:
+
+Build the tiny playable vertical slice very early, then expand the simulation underneath and around it.
+
+That prevents ASHFALL from becoming an impressive engine with no game.
+
+Below is the master prompt. You can paste it into a fresh Replit session along with your GitHub repository.
+
+⸻
+
+ASHFALL — MASTER GAME + ENGINE + DEVELOPMENT BOOTSTRAP PROMPT
+
+============================================================
+ASHFALL
+MASTER GAME DESIGN, ENGINE ARCHITECTURE, DEVELOPMENT
+WORKFLOW, DOCUMENTATION, TESTING & CONTINUATION PROTOCOL
+============================================================
+PROJECT:
+ASHFALL
+REPOSITORY:
+The GitHub repository supplied with this session is the permanent
+source of truth for the ASHFALL project.
+IMPORTANT:
+This document is the master instruction set for the project.
+You are NOT being asked to blindly build the entire game in one
+session.
+You are an engineering agent working inside a larger development
+process.
+Your job is to:
+1. Read the existing repository.
+2. Read the ASHFALL documentation.
+3. Understand the master architecture.
+4. Determine the current project state.
+5. Identify the next unfinished job.
+6. Implement ONLY the appropriate job.
+7. Test it.
+8. Benchmark where appropriate.
+9. Update documentation.
+10. Commit the work.
+11. Push it to GitHub when instructed/authorized.
+12. Leave the repository in a clean, resumable state.
+Never invent a new architecture simply because the current task is
+difficult.
+Never throw away working systems without a documented reason.
+Never claim something is implemented unless it actually exists and
+has been tested.
+============================================================
+1. ASHFALL CORE VISION
+============================================================
+ASHFALL is a single-character open-world RPG built around the feeling
+of living inside a persistent simulated world.
+The player controls ONE CHARACTER.
+The player does NOT directly control:
+- armies
+- settlements
+- governments
+- factions
+- populations
+- workers
+- economies
+Those systems exist independently.
+The player is one person inside the world.
+The world should feel larger than the player.
+The player should be able to:
+EXPLORE
+DISCOVER
+TAKE RISKS
+FIGHT
+RUN
+COLLECT
+TRADE
+IMPROVE
+INTERACT
+MAKE CHOICES
+CREATE CONSEQUENCES
+RETURN
+EXPLORE FARTHER
+The world should continue existing when the player is not present.
+============================================================
+2. DESIGN INSPIRATIONS
+============================================================
+ASHFALL takes inspiration from the FEEL and DESIGN PRINCIPLES of:
+- Dwarf Fortress
+- Dungeon Crawl Stone Soup
+- Minecraft
+- Endless Online
+- classic MapleStory
+- Oblivion
+- RollerCoaster Tycoon
+- Age of Empires
+- Cossacks
+- classic dungeon-crawling RPGs
+- simulation-heavy sandbox games
+These are inspirations only.
+DO NOT copy:
+- copyrighted assets
+- copyrighted characters
+- proprietary code
+- maps
+- art
+- audio
+- text
+- trademarks
+- game-specific implementations
+ASHFALL must become its own game.
+============================================================
+3. THE TARGET EXPERIENCE
+============================================================
+The player should open the game and feel:
+"There is a huge world here."
+The player should NOT feel:
+"I am walking around inside a collection of scripted levels."
+The world should communicate:
+- distance
+- geography
+- history
+- danger
+- opportunity
+- discovery
+- persistence
+- change
+A forest should feel like a forest.
+A road should connect places.
+A river should have a geographic reason to exist.
+A dungeon should feel like a place.
+A settlement should eventually have a reason for existing.
+NPCs should have lives.
+Resources should exist somewhere.
+Trade should move things.
+Factions should have interests.
+Events should have consequences.
+The player should be able to become involved in these systems without controlling them directly.
+============================================================
+4. CORE DESIGN PRINCIPLE
+============================================================
+EVERY IMPORTANT SYSTEM SHOULD BE CAPABLE OF AFFECTING OTHER SYSTEMS.
+Examples:
+Combat
+ ↓
+NPC death
+ ↓
+Settlement population changes
+ ↓
+Economy changes
+ ↓
+Faction reacts
+ ↓
+Reputation changes
+ ↓
+Quest appears
+ ↓
+Player investigates
+ ↓
+World changes again
+Another example:
+Player cuts trees
+ ↓
+Local resource availability changes
+ ↓
+Production changes
+ ↓
+Trade changes
+ ↓
+Prices change
+ ↓
+NPC behavior changes
+Another:
+Faction war
+ ↓
+Road becomes dangerous
+ ↓
+Trade decreases
+ ↓
+Settlement loses supplies
+ ↓
+Prices rise
+ ↓
+NPCs become desperate
+ ↓
+Crime increases
+The world should produce stories through interacting systems.
+============================================================
+5. GAMEPLAY PHILOSOPHY
+============================================================
+The game must remain FUN.
+Simulation exists to improve gameplay.
+Simulation is NOT the product by itself.
+Do not build complicated systems merely because they are technically
+interesting.
+A system should justify itself through:
+- player experience
+- world believability
+- meaningful decisions
+- exploration
+- consequences
+- replayability
+- emergent gameplay
+Whenever possible:
+SIMPLE PLAYER INTERFACE
++
+DEEP UNDERLYING SYSTEM
+The player should not need to understand the entire simulation engine.
+============================================================
+6. PLAYER PHILOSOPHY
+============================================================
+The player is a single adventurer.
+The player can eventually:
+- explore
+- fight
+- flee
+- loot
+- trade
+- craft
+- learn skills
+- improve equipment
+- discover secrets
+- enter dungeons
+- interact with NPCs
+- build reputation
+- commit crimes
+- help factions
+- oppose factions
+- discover world events
+- influence settlements
+- change local situations
+But the player is never an omnipotent world-management interface.
+No RTS army control.
+No direct population management.
+No "God mode" world control.
+The player lives inside the simulation.
+============================================================
+7. WORLD STRUCTURE
+============================================================
+ASHFALL should use a hierarchical world.
+WORLD
+ ↓
+REGIONS
+ ↓
+AREAS
+ ↓
+CHUNKS
+ ↓
+CELLS
+The exact dimensions must remain configurable.
+Do not hard-code the final world size.
+The architecture should eventually be capable of supporting a very large
+world.
+The long-term target may include hundreds of thousands of regions/cells.
+However:
+DO NOT GENERATE THE ENTIRE FINAL WORLD DURING EARLY DEVELOPMENT.
+Use small test worlds first.
+============================================================
+8. OVERWORLD MAP PHILOSOPHY
+============================================================
+The world map should eventually communicate geography in a way that
+feels somewhat like:
+- RollerCoaster Tycoon
+- Age of Empires
+- Cossacks
+This is NOT an RTS.
+The map exists to help the player understand:
+- where they are
+- where they have been
+- where roads go
+- where terrain changes
+- where danger exists
+- where settlements are
+- where rivers flow
+- where unexplored areas exist
+The player still controls only their character.
+============================================================
+9. LOCAL EXPLORATION
+============================================================
+The large overworld should eventually transition naturally into local
+exploration.
+Example:
+WORLD MAP
+ ↓
+REGION
+ ↓
+AREA
+ ↓
+CHUNK
+ ↓
+LOCAL WORLD
+ ↓
+PLAYER
+The player should be able to travel through:
+- forests
+- plains
+- mountains
+- valleys
+- rivers
+- roads
+- ruins
+- caves
+- dungeons
+- settlements
+- wilderness
+The transition should feel like entering a real place rather than
+loading disconnected levels whenever technically practical.
+============================================================
+10. CHUNKING
+============================================================
+Chunks are a fundamental technical concept.
+Chunks exist to support:
+- streaming
+- memory management
+- world generation
+- persistence
+- simulation LOD
+- rendering
+- spatial queries
+The player should not require the entire world to be loaded.
+Nearby chunks can exist at high detail.
+Faraway chunks can exist as compact simulation data.
+============================================================
+11. SIMULATION LEVELS
+============================================================
+Never simulate the entire world at maximum detail.
+Use Simulation LOD.
+LEVEL 0 — PLAYER BUBBLE
+Full simulation:
+- player
+- nearby NPCs
+- creatures
+- combat
+- movement
+- interactions
+- detailed weather
+- detailed environmental state
+LEVEL 1 — NEARBY WORLD
+Reduced simulation:
+- NPC schedules
+- wildlife
+- economy
+- weather
+- population
+- local events
+LEVEL 2 — DISTANT WORLD
+Abstract simulation:
+- population
+- production
+- food
+- resources
+- trade
+- faction activity
+- conflicts
+LEVEL 3 — EXTREMELY DISTANT
+Statistical/event simulation.
+Examples:
+Settlement A gained 12 population.
+Region B experienced a food shortage.
+Faction C captured Region D.
+When the player approaches:
+ABSTRACT STATE
+ ↓
+DETAILED STATE
+The detailed state must remain consistent with the abstract state.
+============================================================
+12. DETERMINISTIC WORLD
+============================================================
+Where practical, the simulation must be deterministic.
+Same:
+- seed
+- starting state
+- inputs
+- simulation sequence
+should produce the same results.
+Randomness must be controlled through explicit seeded RNG systems.
+Avoid hidden global random state.
+World generation must be seedable.
+============================================================
+13. WORLD GENERATION
+============================================================
+Eventually generate:
+- terrain
+- elevation
+- biomes
+- rivers
+- lakes
+- forests
+- mountains
+- roads
+- resources
+- caves
+- ruins
+- dungeons
+- locations
+World generation should use layered systems.
+Example:
+SEED
+ ↓
+CONTINENTS
+ ↓
+ELEVATION
+ ↓
+CLIMATE
+ ↓
+BIOMES
+ ↓
+WATER
+ ↓
+RESOURCES
+ ↓
+ROADS
+ ↓
+LOCATIONS
+ ↓
+SETTLEMENTS
+ ↓
+POPULATION
+ ↓
+ECONOMY
+Do not implement all layers at once.
+============================================================
+14. WORLD PERSISTENCE
+============================================================
+The world must eventually remember meaningful changes.
+Examples:
+- destroyed objects
+- collected resources
+- opened containers
+- discovered locations
+- NPC changes
+- deaths
+- faction changes
+- settlement changes
+- player actions
+- quests
+- events
+Persistence should be designed early even if implemented gradually.
+============================================================
+15. PLAYER PROGRESSION
+============================================================
+ASHFALL should avoid unnecessarily restrictive class design.
+The player should develop through actions.
+Possible progression:
+ATTRIBUTES
++
+SKILLS
++
+EQUIPMENT
++
+PERKS
++
+KNOWLEDGE
++
+REPUTATION
+Skills may use activity/use-based progression where appropriate.
+Examples:
+Combat use → combat skill improvement.
+Mining use → mining improvement.
+Exploration → exploration-related progression.
+Crafting → crafting progression.
+Do not force every skill to use identical progression rules.
+============================================================
+16. EQUIPMENT
+============================================================
+Eventually support:
+- weapons
+- armor
+- shields
+- tools
+- accessories
+- consumables
+- magical equipment
+- rare equipment
+Equipment should have meaningful differences.
+Do not create hundreds of meaningless items just for quantity.
+============================================================
+17. SCROLL SYSTEM
+============================================================
+A future equipment upgrade system will use scrolls or similar items.
+Potential mechanics:
+- improve equipment
+- add modifiers
+- risk failure
+- increase rarity/value
+- create interesting decisions
+DO NOT IMPLEMENT THIS UNTIL THE BASIC EQUIPMENT LOOP WORKS.
+============================================================
+18. COMBAT
+============================================================
+Combat should be:
+- readable
+- responsive
+- dangerous
+- understandable
+- skill-based
+- expandable
+Combat can eventually interact with:
+- equipment
+- skills
+- status effects
+- NPCs
+- factions
+- reputation
+- crime
+- quests
+- world events
+Avoid creating a huge combat system before basic exploration is fun.
+============================================================
+19. EXPLORATION
+============================================================
+Exploration is one of the PRIMARY GAMEPLAY PILLARS.
+The player should find things naturally.
+Possible discoveries:
+- hidden caves
+- ruins
+- dungeons
+- rare resources
+- unusual NPCs
+- abandoned buildings
+- treasure
+- dangerous creatures
+- world events
+- strange landmarks
+- lost roads
+- secrets
+Do not make every discovery a quest marker.
+============================================================
+20. DUNGEONS
+============================================================
+Dungeons should eventually support:
+- exploration
+- combat
+- traps
+- loot
+- secrets
+- environmental storytelling
+- multiple routes
+- risk/reward
+- procedural generation where appropriate
+Dungeon Crawl Stone Soup-style clarity and meaningful decisions are
+useful inspirations.
+============================================================
+21. NPCS
+============================================================
+NPCs eventually require:
+- identity
+- location
+- needs
+- schedule
+- job
+- relationships
+- inventory
+- wealth
+- faction
+- reputation
+- goals
+- events
+- knowledge
+But not every NPC requires full simulation every frame.
+Use simulation LOD.
+============================================================
+22. NPC SCHEDULES
+============================================================
+Eventually NPCs should have schedules such as:
+WAKE
+ ↓
+WORK
+ ↓
+EAT
+ ↓
+SOCIALIZE
+ ↓
+WORK
+ ↓
+RETURN HOME
+ ↓
+SLEEP
+The schedule should be influenced by:
+- job
+- location
+- weather
+- danger
+- faction
+- needs
+- world events
+============================================================
+23. SETTLEMENTS
+============================================================
+SETTLEMENTS ARE A LATER SYSTEM.
+Do NOT allow settlement simulation to delay the first playable game.
+Eventually settlements can have:
+- population
+- buildings
+- jobs
+- food
+- production
+- services
+- trade
+- ownership
+- factions
+- politics
+- growth
+- decline
+- events
+Settlements should emerge naturally from the world design.
+============================================================
+24. ECONOMY
+============================================================
+Eventually support:
+SUPPLY
++
+DEMAND
++
+PRODUCTION
++
+CONSUMPTION
++
+TRADE
++
+TRANSPORT
++
+WEALTH
+Prices should be capable of changing based on circumstances.
+Do not simulate economic details that do not affect gameplay.
+============================================================
+25. FACTIONS
+============================================================
+Eventually factions have:
+- goals
+- relationships
+- territories
+- resources
+- allies
+- enemies
+- reputation
+- conflicts
+The player influences factions but does not directly command them.
+============================================================
+26. REPUTATION
+============================================================
+Reputation can exist at multiple levels:
+NPC
+LOCAL
+SETTLEMENT
+FACTION
+REGIONAL
+Actions should have consequences.
+============================================================
+27. CRIME
+============================================================
+Eventually support:
+- theft
+- assault
+- murder
+- trespassing
+- witnesses
+- reputation
+- law enforcement
+- consequences
+Do not build a huge legal system before the basic gameplay works.
+============================================================
+28. QUESTS
+============================================================
+Quests should eventually be generated from:
+- NPC problems
+- faction conflict
+- resource shortages
+- crimes
+- exploration
+- world events
+- dungeon discoveries
+- political situations
+Static handcrafted quests are allowed.
+Emergent quests are preferred when practical.
+============================================================
+29. CRAFTING
+============================================================
+Crafting eventually uses:
+- resources
+- recipes
+- skills
+- tools
+- stations
+- time
+- quality
+Crafting should interact with the economy.
+============================================================
+30. WEATHER
+============================================================
+Eventually support:
+- temperature
+- rain
+- snow
+- wind
+- storms
+- seasonal changes
+Weather can affect:
+- visibility
+- travel
+- NPC schedules
+- wildlife
+- crops
+- combat
+- world presentation
+============================================================
+31. WILDLIFE
+============================================================
+Wildlife should eventually exist independently of the player.
+Animals can:
+- wander
+- seek food
+- flee
+- hunt
+- reproduce
+- migrate
+- die
+But use simulation LOD.
+============================================================
+32. DATA-ORIENTED ARCHITECTURE
+============================================================
+Performance matters.
+Avoid automatically creating heavyweight objects for every world element.
+Use compact data structures where justified.
+Potential candidates:
+- terrain
+- resources
+- vegetation
+- particles
+- entity state
+- environmental state
+However:
+DO NOT blindly build an ECS.
+DO NOT blindly use arrays everywhere.
+Choose architecture based on:
+- access patterns
+- memory
+- cache locality
+- maintainability
+- profiling
+Measure before optimizing.
+============================================================
+33. PERFORMANCE PHILOSOPHY
+============================================================
+The goal is not:
+"make everything insanely optimized."
+The goal is:
+"make the architecture capable of scaling."
+Rules:
+PROFILE
+ ↓
+FIND HOTSPOT
+ ↓
+UNDERSTAND IT
+ ↓
+CHANGE IT
+ ↓
+BENCHMARK
+ ↓
+COMPARE
+ ↓
+KEEP OR REVERT
+Never perform premature micro-optimization.
+Native code or assembly is permitted ONLY when profiling demonstrates
+that it is justified.
+============================================================
+34. ENGINE ARCHITECTURE
+============================================================
+The long-term architecture should contain conceptual layers:
+CORE
+- timing
+- configuration
+- logging
+- RNG
+- events
+- lifecycle
+WORLD
+- coordinates
+- chunks
+- regions
+- terrain
+- generation
+- streaming
+SIMULATION
+- time
+- entities
+- AI
+- needs
+- schedules
+- economy
+- factions
+GAMEPLAY
+- player
+- movement
+- combat
+- inventory
+- equipment
+- skills
+- quests
+RENDERING
+- camera
+- terrain
+- entities
+- visibility
+- lighting
+- UI
+TOOLS
+- debug
+- profiling
+- world inspection
+- simulation controls
+PERSISTENCE
+- saves
+- world state
+- player state
+============================================================
+35. FIXED TIMESTEP
+============================================================
+Simulation should use a controlled timestep.
+Rendering should not dictate simulation correctness.
+The architecture must separate:
+SIMULATION TIME
+from:
+RENDER TIME
+============================================================
+36. EVENT SYSTEM
+============================================================
+Systems should communicate through clean interfaces/events where
+appropriate.
+Avoid tightly coupling every system directly to every other system.
+Example:
+CombatSystem
+ ↓
+EntityDiedEvent
+ ↓
+ReputationSystem
+ ↓
+FactionSystem
+ ↓
+QuestSystem
+rather than:
+CombatSystem directly manipulating every other system.
+============================================================
+37. ENTITY IDENTIFICATION
+============================================================
+Entities require stable IDs.
+IDs must support:
+- save/load
+- references
+- debugging
+- persistence
+Avoid relying on object memory addresses as persistent identity.
+============================================================
+38. SAVE SYSTEM
+============================================================
+Eventually saves must contain:
+- player
+- world
+- entities
+- chunks
+- discoveries
+- inventory
+- equipment
+- NPC state
+- factions
+- economy
+- events
+Save format should be versioned.
+Future save migrations must be possible.
+============================================================
+39. INTERIORS
+============================================================
+Prefer a unified world coordinate model.
+When entering a building:
+same world
++
+different visibility
++
+interior geometry
+rather than automatically creating a disconnected level.
+Interior simulation must remain compatible with NPC schedules and world
+state.
+============================================================
+40. VISIBILITY
+============================================================
+Build reusable visibility infrastructure.
+Potential uses:
+- camera visibility
+- occlusion
+- trees
+- buildings
+- walls
+- fog
+- stealth
+- AI perception
+============================================================
+41. RENDERING PHILOSOPHY
+============================================================
+Do not prioritize final graphics before gameplay.
+Use placeholders.
+Examples:
+PLAYER → primitive
+TREE → primitive
+HOUSE → primitive
+MONSTER → primitive
+WEAPON → simple geometry
+Once gameplay works, improve presentation.
+============================================================
+42. UI PHILOSOPHY
+============================================================
+The interface should eventually feel readable and information-rich.
+Influences may include classic RPGs and simulation games.
+The player should always understand:
+- health
+- resources
+- equipment
+- location
+- important effects
+- nearby threats
+- inventory
+- progression
+Do not overwhelm the player with simulation data unless useful.
+============================================================
+43. DEBUG TOOLS
+============================================================
+Eventually provide developer panels for:
+WORLD
+- coordinates
+- region
+- chunk
+- time
+- season
+- weather
+- seed
+SIMULATION
+- tick time
+- entity count
+- active simulation levels
+- event count
+- memory
+AI
+- active agents
+- decisions
+- pathfinding calls
+- update rate
+ECONOMY
+- prices
+- supply
+- demand
+- production
+- trade
+RENDERING
+- FPS
+- frame time
+- visible entities
+- draw calls
+These tools should make development and debugging dramatically easier.
+============================================================
+44. VERTICAL SLICE — CRITICAL
+============================================================
+DO NOT spend months building the entire engine before proving the game
+is fun.
+Introduce a tiny playable vertical slice EARLY.
+The first meaningful playable slice should eventually contain:
+- ONE PLAYER
+- SMALL OVERWORLD
+- SEVERAL CHUNKS
+- SIMPLE TERRAIN
+- EXPLORATION
+- ONE OR MORE SIMPLE NPCS
+- ONE SMALL OUTPOST
+- ONE CREATURE
+- BASIC COMBAT
+- LOOT
+- INVENTORY
+- EQUIPMENT
+- SMALL DUNGEON
+- SAVE/LOAD
+The loop:
+EXPLORE
+ ↓
+DISCOVER
+ ↓
+ENCOUNTER DANGER
+ ↓
+FIGHT OR ESCAPE
+ ↓
+LOOT
+ ↓
+RETURN
+ ↓
+EQUIP / TRADE
+ ↓
+EXPLORE FARTHER
+This is the FIRST GAME.
+Everything afterward expands this foundation.
+============================================================
+45. VERTICAL SLICE SUCCESS TEST
+============================================================
+The slice is NOT complete merely because it runs.
+Ask:
+Can the player:
+1. Start?
+2. Move?
+3. Explore?
+4. Discover something?
+5. Encounter danger?
+6. Make a meaningful decision?
+7. Fight or escape?
+8. Receive a reward?
+9. Improve?
+10. Save?
+11. Load?
+12. Continue exploring?
+If not, continue fixing the slice.
+============================================================
+46. DEVELOPMENT PHASES
+============================================================
+PHASE 0
+PROJECT RESET + DOCUMENTATION
+PHASE 1
+ENGINE FOUNDATION
+PHASE 2
+WORLD FOUNDATION
+PHASE 3
+EARLY VERTICAL SLICE
+PHASE 4
+WORLD SIMULATION
+PHASE 5
+NPC / LIVING WORLD
+PHASE 6
+RPG DEPTH
+PHASE 7
+CONTENT
+PHASE 8
+PRESENTATION
+PHASE 9
+OPTIMIZATION
+PHASE 10
+STRESS TESTING / RELEASE
+============================================================
+47. PHASE 0
+============================================================
+Create the documentation architecture first.
+Recommended:
+docs/
+  ASHFALL_MASTER_DESIGN.md
+  ENGINE_BIBLE.md
+  WORLD_BIBLE.md
+  GAMEPLAY_BIBLE.md
+  SIMULATION_BIBLE.md
+  PERFORMANCE_BIBLE.md
+  CONTENT_BIBLE.md
+  ART_DIRECTION.md
+  AI_DEVELOPMENT_WORKFLOW.md
+  DEVELOPMENT_ROADMAP.md
+  JOB_PROTOCOL.md
+  VERTICAL_SLICE.md
+  CHANGELOG.md
+Also:
+docs/jobs/
+Every completed engineering job should eventually have a job record.
+============================================================
+48. JOB SYSTEM
+============================================================
+Every job follows:
+SPECIFICATION
+ ↓
+IMPLEMENTATION
+ ↓
+UNIT TEST
+ ↓
+INTEGRATION TEST
+ ↓
+BENCHMARK
+ ↓
+DOCUMENT
+ ↓
+GIT COMMIT
+ ↓
+NEXT JOB
+A job must have:
+JOB ID
+NAME
+OBJECTIVE
+SCOPE
+NON-GOALS
+DEPENDENCIES
+FILES
+IMPLEMENTATION
+TESTS
+BENCHMARK
+SUCCESS CRITERIA
+STATUS
+Possible statuses:
+PLANNED
+IN_PROGRESS
+BLOCKED
+IMPLEMENTED
+TESTED
+BENCHMARKED
+APPROVED
+DEPRECATED
+============================================================
+49. AI SESSION RULES
+============================================================
+Each fresh AI session must:
+1. Read README.
+2. Read master design.
+3. Read relevant Bible.
+4. Read roadmap.
+5. Read current job.
+6. Inspect repository.
+7. Inspect Git status.
+8. Determine current implementation state.
+9. Implement only the current job.
+10. Test.
+11. Update docs.
+12. Report.
+Never assume previous AI context.
+The repository must contain enough information for a new AI to continue.
+============================================================
+50. SESSION HANDOFF
+============================================================
+At the end of every session update:
+docs/CHANGELOG.md
+and create/update:
+docs/CURRENT_STATE.md
+CURRENT_STATE.md must contain:
+CURRENT PHASE
+CURRENT JOB
+COMPLETED JOBS
+ACTIVE SYSTEMS
+KNOWN BUGS
+KNOWN LIMITATIONS
+NEXT JOB
+TEST STATUS
+BENCHMARK STATUS
+IMPORTANT ARCHITECTURAL DECISIONS
+FILES CHANGED
+LAST COMMIT
+This is extremely important.
+A new session should be able to understand the project from the repository.
+============================================================
+51. ARCHITECTURE DECISION RECORDS
+============================================================
+Create:
+docs/decisions/
+Important decisions should become small records.
+Example:
+ADR-001-java.md
+ADR-002-world-coordinates.md
+ADR-003-chunk-size.md
+Each should explain:
+DECISION
+REASON
+ALTERNATIVES
+CONSEQUENCES
+Never silently change major architecture.
+============================================================
+52. GIT PHILOSOPHY
+============================================================
+GitHub is the permanent source of truth.
+Use small, meaningful commits.
+Examples:
+Job 001 — Engine Foundation
+Job 002 — Deterministic RNG
+Job 003 — World Coordinates
+Job 004 — Chunk Storage
+Never create giant mystery commits such as:
+"fixed everything"
+============================================================
+53. OLD PROJECT PRESERVATION
+============================================================
+If an existing ASHFALL project exists:
+DO NOT DELETE IT FIRST.
+Inspect:
+git status
+git branch
+git log
+git remote -v
+Preserve old work using a branch/tag/archive where appropriate.
+Possible:
+archive/pre-reset
+The exact method must respect the repository's existing Git state.
+NEVER force-push over existing GitHub history without explicit
+authorization.
+============================================================
+54. REPOSITORY STRUCTURE
+============================================================
+The repository should eventually resemble:
+ASHFALL/
+README.md
+LICENSE
+.gitignore
+build.gradle
+settings.gradle
+docs/
+    ASHFALL_MASTER_DESIGN.md
+    ENGINE_BIBLE.md
+    WORLD_BIBLE.md
+    GAMEPLAY_BIBLE.md
+    SIMULATION_BIBLE.md
+    PERFORMANCE_BIBLE.md
+    CONTENT_BIBLE.md
+    ART_DIRECTION.md
+    AI_DEVELOPMENT_WORKFLOW.md
+    DEVELOPMENT_ROADMAP.md
+    JOB_PROTOCOL.md
+    VERTICAL_SLICE.md
+    CHANGELOG.md
+    CURRENT_STATE.md
+    jobs/
+    decisions/
+specs/
+src/
+    main/
+        java/
+    test/
+        java/
+assets/
+    placeholder/
+    generated/
+    final/
+tools/
+benchmarks/
+saves/
+Do not create massive empty implementation structures just for
+appearance.
+Create implementation folders when needed.
+============================================================
+55. BUILD SYSTEM
+============================================================
+Use Java + Gradle unless the existing repository has a compelling
+technical reason that requires another arrangement.
+Keep dependencies minimal.
+Do not add libraries simply because they are popular.
+Every dependency should have a reason.
+============================================================
+56. TESTING
+============================================================
+Testing is mandatory.
+Use:
+UNIT TESTS
++
+INTEGRATION TESTS
++
+HEADLESS TESTS
++
+BENCHMARKS
+where appropriate.
+Every new system must have tests.
+Examples:
+RNG
+ → deterministic output test
+Coordinates
+ → conversion test
+Chunks
+ → storage test
+Streaming
+ → load/unload test
+Save
+ → save/load round-trip test
+Combat
+ → deterministic combat test
+Inventory
+ → add/remove/stack test
+============================================================
+57. HEADLESS MODE
+============================================================
+The engine should eventually support running without graphical output.
+This enables:
+- CI tests
+- simulation tests
+- benchmarks
+- world generation tests
+- stress testing
+============================================================
+58. BENCHMARKING
+============================================================
+Benchmarks should eventually measure:
+- tick duration
+- chunk generation
+- chunk loading
+- entity processing
+- pathfinding
+- save/load
+- world simulation
+- memory use
+Never claim performance numbers without measurement.
+============================================================
+59. CONTENT PIPELINE
+============================================================
+Content should eventually be data-driven.
+Avoid hardcoding every item/NPC/monster directly into gameplay code.
+Definitions should eventually be externalized where practical.
+Possible:
+JSON
+YAML
+CSV
+binary formats
+or another justified format.
+Choose based on actual requirements.
+============================================================
+60. PROCEDURAL GENERATION
+============================================================
+Procedural generation should create variety while maintaining
+believability.
+Do not create random noise everywhere.
+Generation should respect relationships.
+Example:
+Mountain
+ ↓
+water source
+ ↓
+river
+ ↓
+fertile land
+ ↓
+settlement
+ ↓
+road
+ ↓
+trade
+The world should have causality.
+============================================================
+61. WORLD CAUSALITY
+============================================================
+Prefer:
+SYSTEM A
+affects
+SYSTEM B
+which affects
+SYSTEM C
+rather than disconnected random events.
+Example:
+Climate
+ ↓
+biome
+ ↓
+resources
+ ↓
+settlement
+ ↓
+economy
+ ↓
+population
+ ↓
+faction importance
+============================================================
+62. EMERGENT STORY
+============================================================
+The goal is not to write every story manually.
+The simulation should generate situations.
+Example:
+A merchant dies.
+His goods remain.
+Another NPC finds them.
+The road becomes dangerous.
+Prices change.
+The player investigates.
+A faction becomes involved.
+A quest emerges.
+The player chooses what to do.
+The world remembers.
+This is the desired philosophy.
+============================================================
+63. CONTENT PHILOSOPHY
+============================================================
+Quality before quantity.
+Do not add:
+1,000 items
+if only 50 matter.
+Do not add:
+500 NPC templates
+if they all behave identically.
+Each system should add meaningful gameplay.
+============================================================
+64. ART PHILOSOPHY
+============================================================
+Start simple.
+Gameplay first.
+Placeholder geometry is acceptable.
+Final visual identity should eventually be:
+- readable
+- cohesive
+- atmospheric
+- recognizable
+- performant
+- scalable
+Do not allow art production to block simulation development.
+============================================================
+65. MOBILE / PERFORMANCE AWARENESS
+============================================================
+ASHFALL should remain conscious of eventual mobile performance
+requirements.
+Avoid architectural decisions that assume unlimited desktop resources.
+However:
+Do NOT prematurely cripple the engine.
+Use profiling and realistic target benchmarks.
+============================================================
+66. DEBUGGING PHILOSOPHY
+============================================================
+When a bug appears:
+1. Reproduce.
+2. Isolate.
+3. Identify responsible subsystem.
+4. Create a regression test.
+5. Fix.
+6. Run related tests.
+7. Run full tests.
+8. Document if architectural.
+9. Commit.
+Never randomly modify unrelated systems.
+============================================================
+67. FAILURE PHILOSOPHY
+============================================================
+If something fails:
+DO NOT:
+"fix the entire project."
+Instead:
+identify the smallest responsible subsystem.
+Then fix only that system.
+============================================================
+68. CURRENT TASK DISCOVERY
+============================================================
+At the beginning of every fresh session:
+READ:
+README.md
+docs/ASHFALL_MASTER_DESIGN.md
+docs/CURRENT_STATE.md
+docs/DEVELOPMENT_ROADMAP.md
+docs/JOB_PROTOCOL.md
+Then inspect:
+Git status
+Current branch
+Recent commits
+Build status
+Tests
+Determine the next job.
+If a job is explicitly provided by the user, follow that job.
+If no job is provided, choose the next unfinished job according to
+DEVELOPMENT_ROADMAP.md.
+============================================================
+69. DO NOT OVERBUILD
+============================================================
+If the current task is:
+"Implement chunk storage"
+DO NOT also implement:
+- factions
+- combat
+- quests
+- weather
+- economy
+unless required as dependencies.
+Scope discipline is mandatory.
+============================================================
+70. DO NOT UNDERBUILD
+============================================================
+A job is not complete if it merely compiles.
+It must satisfy its:
+- implementation requirements
+- tests
+- integration requirements
+- documentation requirements
+- success criteria
+============================================================
+71. COMPLETION STATES
+============================================================
+A feature is:
+DESIGNED
+when documented.
+PLANNED
+when scheduled.
+IMPLEMENTED
+when code exists.
+TESTED
+when automated/manual tests pass.
+BENCHMARKED
+when performance is measured where appropriate.
+APPROVED
+when the development process accepts it.
+Do not confuse these states.
+============================================================
+72. MASTER ROADMAP
+============================================================
+PHASE 0
+Reset + Documentation
+PHASE 1
+Engine Foundation
+PHASE 2
+World Foundation
+PHASE 3
+Vertical Slice
+PHASE 4
+Simulation
+PHASE 5
+Living World
+PHASE 6
+RPG Systems
+PHASE 7
+Content
+PHASE 8
+Presentation
+PHASE 9
+Optimization
+PHASE 10
+Stress Testing + Release
+============================================================
+73. INITIAL JOBS
+============================================================
+JOB 001
+Engine Foundation
+Implement:
+- Java
+- Gradle
+- main entry point
+- lifecycle
+- fixed timestep
+- high resolution timing
+- deterministic RNG
+- logging
+- configuration
+- headless mode
+- performance counters
+- basic tests
+NO GAMEPLAY.
+JOB 002
+World Coordinate System
+JOB 003
+World Grid
+JOB 004
+Chunk Storage
+JOB 005
+Basic World Generator
+JOB 006
+Chunk Streaming
+JOB 007
+Minimal Player
+JOB 008
+Movement
+JOB 009
+Camera / Presentation
+JOB 010
+Exploration
+JOB 011
+Simple Creature
+JOB 012
+Basic Combat
+JOB 013
+Loot
+JOB 014
+Inventory
+JOB 015
+Equipment
+JOB 016
+Small Dungeon
+JOB 017
+Tiny Outpost
+JOB 018
+Save / Load
+Then:
+VERTICAL SLICE PLAYTEST.
+Do NOT immediately jump into huge world simulation.
+First determine whether:
+"ONE CHARACTER + SMALL WORLD + EXPLORATION + DANGER + REWARD"
+is fun.
+============================================================
+74. AFTER VERTICAL SLICE
+============================================================
+Expand:
+TIME
+ ↓
+WEATHER
+ ↓
+WORLD RESOURCES
+ ↓
+NPCS
+ ↓
+NEEDS
+ ↓
+SCHEDULES
+ ↓
+ECONOMY
+ ↓
+SETTLEMENTS
+ ↓
+FACTIONS
+ ↓
+REPUTATION
+ ↓
+CRIME
+ ↓
+QUESTS
+ ↓
+POLITICS
+ ↓
+WAR
+ ↓
+LARGE-SCALE WORLD SIMULATION
+The early game remains intact while the world underneath it becomes
+deeper.
+============================================================
+75. DEVELOPMENT LOOP
+============================================================
+The permanent loop is:
+MASTER DESIGN
+ ↓
+ROADMAP
+ ↓
+JOB
+ ↓
+FRESH AI SESSION
+ ↓
+IMPLEMENT
+ ↓
+TEST
+ ↓
+BENCHMARK
+ ↓
+DOCUMENT
+ ↓
+COMMIT
+ ↓
+PUSH
+ ↓
+UPDATE CURRENT_STATE
+ ↓
+NEXT JOB
+============================================================
+76. REPLIT RULE
+============================================================
+Replit is an implementation environment.
+Do not treat Replit's memory as permanent project memory.
+Permanent knowledge belongs in GitHub.
+If an important decision exists only in conversation, it is considered
+at risk of being lost.
+Therefore:
+IMPORTANT DECISION
+ ↓
+DOCUMENT IT
+ ↓
+COMMIT IT
+ ↓
+GITHUB
+============================================================
+77. FRESH SESSION RULE
+============================================================
+A fresh session should be able to continue ASHFALL using only:
+GitHub repository
++
+current documentation
++
+current job
+The AI must not require previous chat history.
+============================================================
+78. USER CONTROL
+============================================================
+The user remains the product owner.
+The AI may:
+- identify technical problems
+- recommend architecture
+- suggest alternatives
+- identify risks
+- improve implementation
+The AI must NOT silently redefine the game's core vision.
+When a major architectural change is necessary:
+DOCUMENT
++
+EXPLAIN
++
+REQUEST APPROVAL
+unless the user has explicitly authorized autonomous architectural
+changes.
+============================================================
+79. MASTER PRINCIPLE
+============================================================
+ASHFALL IS NOT:
+"A giant pile of features."
+ASHFALL IS:
+A coherent game where:
+PLAYER
+ ↓
+WORLD
+ ↓
+SIMULATION
+ ↓
+CONSEQUENCES
+ ↓
+GAMEPLAY
+ ↓
+PLAYER
+form a continuous loop.
+============================================================
+80. FINAL INITIALIZATION INSTRUCTION
+============================================================
+NOW BEGIN.
+STEP 1
+Inspect the repository.
+STEP 2
+Inspect Git status, branches, remotes, and recent history.
+STEP 3
+Determine whether this is an existing ASHFALL project.
+STEP 4
+Preserve existing work before making destructive changes.
+STEP 5
+Create the master documentation architecture.
+STEP 6
+Create/update:
+README.md
+docs/ASHFALL_MASTER_DESIGN.md
+docs/ENGINE_BIBLE.md
+docs/WORLD_BIBLE.md
+docs/GAMEPLAY_BIBLE.md
+docs/SIMULATION_BIBLE.md
+docs/PERFORMANCE_BIBLE.md
+docs/CONTENT_BIBLE.md
+docs/ART_DIRECTION.md
+docs/AI_DEVELOPMENT_WORKFLOW.md
+docs/DEVELOPMENT_ROADMAP.md
+docs/JOB_PROTOCOL.md
+docs/VERTICAL_SLICE.md
+docs/CHANGELOG.md
+docs/CURRENT_STATE.md
+STEP 7
+Create the appropriate job structure.
+STEP 8
+Establish the Java/Gradle foundation if necessary.
+STEP 9
+Implement ONLY JOB 001 if the repository is ready for it.
+STEP 10
+Run tests.
+STEP 11
+Run the headless engine.
+STEP 12
+Verify Git diff.
+STEP 13
+Update CURRENT_STATE.md.
+STEP 14
+Update CHANGELOG.md.
+STEP 15
+Prepare a clean Git commit.
+STEP 16
+If GitHub push is authorized and configured, push the changes.
+STEP 17
+STOP.
+Do NOT begin JOB 002 in this session.
+============================================================
+FINAL REPORT FORMAT
+============================================================
+ASHFALL INITIALIZATION REPORT
+Repository:
+[status]
+Old project:
+[preserved / not applicable / problem]
+Git:
+[status]
+Documentation:
+[status]
+Engine Foundation:
+[status]
+Build:
+PASS / FAIL
+Tests:
+PASS / FAIL
+Headless:
+PASS / FAIL
+Files Created:
+[list]
+Files Modified:
+[list]
+Files Preserved:
+[list]
+Current Phase:
+[phase]
+Current Job:
+[job]
+Next Job:
+[job]
+Known Problems:
+[list]
+Important Decisions:
+[list]
+Git Commit:
+[hash/message]
+GitHub Push:
+[status]
+STOP.
+============================================================
+END MASTER PROMPT
+============================================================
+
+One important improvement to your old plan
+
+I would not make Replit build all 80 systems before seeing a playable game.
+
+The development path should now be:
+
+Foundation → tiny world → player → exploration → danger → combat → loot → equipment → tiny dungeon/outpost → save/load → PLAYTEST
+
+Then:
+
+world simulation → NPCs → economy → settlements → factions → emergent events → huge world
+
+That is much safer for the vision you’ve been describing. The enormous Dwarf Fortress-like simulation becomes the depth underneath a game that is already fun, rather than the game itself.
+
+Your permanent GitHub memory system
+
+The most important files are:
+
+docs/
+├── ASHFALL_MASTER_DESIGN.md   ← what the game IS
+├── ENGINE_BIBLE.md             ← how the engine works
+├── WORLD_BIBLE.md              ← how the world works
+├── GAMEPLAY_BIBLE.md           ← how it should feel/play
+├── SIMULATION_BIBLE.md         ← how the living world works
+├── PERFORMANCE_BIBLE.md        ← scaling/performance rules
+├── CONTENT_BIBLE.md            ← content rules
+├── DEVELOPMENT_ROADMAP.md      ← what gets built next
+├── JOB_PROTOCOL.md             ← how AI builds it
+├── VERTICAL_SLICE.md           ← playable-game target
+├── CURRENT_STATE.md            ← where we are RIGHT NOW
+├── CHANGELOG.md                ← what changed
+│
+├── jobs/                       ← individual engineering tasks
+└── decisions/                  ← important architecture decisions
+
+CURRENT_STATE.md is especially important. Every Replit session updates it before stopping. That means six months from now you can open a fresh Replit session, give it the GitHub repository, and say essentially:
+
+“Read the ASHFALL documentation and continue from CURRENT_STATE.md.”
+
+It should be able to reconstruct the project’s state without relying on this conversation.
+
+And every finished job should be committed to GitHub. That gives you a permanent history you can roll back through instead of constantly rebuilding the project from scratch.

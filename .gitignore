@@ -4,6 +4,8 @@
 dist
 tmp
 out-tsc
+/.gradle/
+/build/
 *.tsbuildinfo
 .expo
 .expo-shared
@@ -47,3 +49,4 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+/.agents/
