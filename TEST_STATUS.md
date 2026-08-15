@@ -22,3 +22,8 @@
 ## Job 005 status
 
 Focused generator tests have been added but are not yet marked passing. Run the full engine test suite and a representative generation benchmark before changing Job 005 to TESTED.
+
+
+## Latest verification attempt
+
+A temporary compile of the engine subsystem was attempted without importing the repository. It could not start because javac is not installed in the current environment. No Java compiler error was produced. Run the repository’s Gradle test workflow in a Java-enabled checkout before marking Job 005 TESTED.

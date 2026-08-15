@@ -40,3 +40,7 @@
     - Do not eagerly materialize a 500 x 500 world or create one static file per cell.
     - Do not mark a job complete without tests, documentation, a reviewed diff, and a commit.
     
+
+## Verification blocker
+
+The focused Job 005 source and tests are committed, but this environment does not provide javac, so the engine test suite and compile check remain pending in a full Java/Gradle checkout.

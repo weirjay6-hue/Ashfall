@@ -65,3 +65,7 @@
 
     PLANNED
     
+
+## Verification status
+
+The implementation and focused tests are committed. Verification is pending because javac is unavailable in the current environment; do not change the status to TESTED until the repository’s Java/Gradle test workflow passes.
