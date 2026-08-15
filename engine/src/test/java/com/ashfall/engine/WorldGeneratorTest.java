@@ -73,7 +73,7 @@ package com.ashfall.engine;
 
       @Test
       void engineGenerationStoresTheGeneratedChunk() {
-          Engine engine = new Engine(Configuration.defaults(42L, true, 4, 16, 16));
+          Engine engine = new Engine(new Configuration(42L, 20, true, 4, 16, 16));
 
           Chunk generated = engine.generateChunk(new ChunkCoordinate(0, 0));
 
