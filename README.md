@@ -38,3 +38,9 @@ and push it to GitHub when authorization is available.
 - `engine/` — Java/Gradle simulation foundation.
 - `docs/` — permanent design, architecture, workflow, and handoff memory.
 - `attached_assets/` — source briefs supplied during development.
+
+## Fresh Replit continuation
+
+When starting from a fresh Replit account or chat, do not import, mount, clone, install, or broadly scan the repository first. Read REPLIT_START_HERE.md, PROJECT_STATE.md, NEXT_TASK.md, SYSTEM_MAP.md, TEST_STATUS.md, docs/JOB_PROTOCOL.md, and only the active job record.
+
+The first session objective must be one bounded job. Do not attempt to build the whole game, regenerate the full world, or rewrite working systems.
