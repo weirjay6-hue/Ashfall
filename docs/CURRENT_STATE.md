@@ -6,8 +6,8 @@ Phase 1 — Engine Foundation.
 
 ## Current job
 
-Job 001 — Engine Foundation is implemented and tested. The next job is Job
-002 — World Coordinate System.
+Job 002 — World Coordinate System is implemented and tested. The next job is
+Job 003 — World Grid.
 
 ## Completed
 
@@ -15,6 +15,7 @@ Job 001 — Engine Foundation is implemented and tested. The next job is Job
 - Existing browser RPG preserved at `artifacts/ashfall`.
 - Archive branch created before engine work.
 - Job 001 Java/Gradle foundation.
+- Job 002 world coordinate system.
 
 ## Active systems
 
@@ -25,7 +26,8 @@ Job 001 — Engine Foundation is implemented and tested. The next job is Job
 
 ## Known limitations
 
-- Java engine has no world, player, rendering, or persistence yet.
+- Java engine has coordinates but no world grid, player, rendering, or
+  persistence yet.
 - Gradle build uses Java 17-compatible source settings.
 - Browser game and Java engine are intentionally separate until the engine
   reaches a useful vertical-slice boundary.
@@ -34,11 +36,9 @@ Job 001 — Engine Foundation is implemented and tested. The next job is Job
 
 - `gradle test`: passing.
 - `gradle run --args="--headless --ticks=120 --seed=ashfall-dev"`: passing.
+- `gradle run --args="--headless --ticks=120 --seed=ashfall-dev --chunk-size=32"`:
+  passing.
 - Browser game checks remain available through the existing pnpm scripts.
-
-## Last commit
-
-`f512eea` — Phase 0 and Job 001 engine foundation.
 
 ## GitHub push
 
@@ -47,4 +47,4 @@ preserved on `origin/archive/pre-bootstrap-20260815`.
 
 ## Next job
 
-Job 002 — World Coordinate System.
+Job 003 — World Grid.

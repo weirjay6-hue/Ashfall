@@ -10,6 +10,7 @@ public final class Main {
     public static void main(String[] args) {
         boolean headless = false;
         int ticks = 60;
+        int chunkSize = 32;
         long seed = 0x41534846414C4CL;
 
         for (String arg : args) {
@@ -19,12 +20,14 @@ public final class Main {
                 ticks = Integer.parseInt(arg.substring("--ticks=".length()));
             } else if (arg.startsWith("--seed=")) {
                 seed = parseSeed(arg.substring("--seed=".length()));
+            } else if (arg.startsWith("--chunk-size=")) {
+                chunkSize = Integer.parseInt(arg.substring("--chunk-size=".length()));
             } else {
                 throw new IllegalArgumentException("Unknown argument: " + arg);
             }
         }
 
-        Configuration configuration = Configuration.defaults(seed, headless);
+        Configuration configuration = new Configuration(seed, 20, headless, chunkSize);
         Engine engine = new Engine(configuration);
         try {
             if (headless) {

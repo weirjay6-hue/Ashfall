@@ -3,14 +3,15 @@ package com.ashfall.engine;
 import java.util.logging.Logger;
 
 /**
- * Lifecycle shell for the engine. Gameplay systems will attach to this shell
- * in later jobs; Job 001 intentionally contains no gameplay.
+ * Lifecycle shell for the engine. Gameplay systems attach to this shell in
+ * later jobs.
  */
 public final class Engine {
     private static final Logger LOGGER = Logger.getLogger(Engine.class.getName());
 
     private final Configuration configuration;
     private final DeterministicRng rng;
+    private final WorldCoordinateSystem worldCoordinates;
     private final PerformanceCounters counters = new PerformanceCounters();
     private final FixedTimestepLoop loop;
     private boolean running;
@@ -18,6 +19,7 @@ public final class Engine {
     public Engine(Configuration configuration) {
         this.configuration = configuration;
         this.rng = new DeterministicRng(configuration.seed());
+        this.worldCoordinates = new WorldCoordinateSystem(configuration.chunkSize());
         this.loop = new FixedTimestepLoop(configuration.tickRate(), this::tick);
     }
 
@@ -28,6 +30,7 @@ public final class Engine {
         running = true;
         LOGGER.info(() -> "ASHFALL engine started seed=" + configuration.seed()
             + " tickRate=" + configuration.tickRate()
+            + " chunkSize=" + configuration.chunkSize()
             + " headless=" + configuration.headless());
     }
 
@@ -62,6 +65,10 @@ public final class Engine {
 
     public DeterministicRng rng() {
         return rng;
+    }
+
+    public WorldCoordinateSystem worldCoordinates() {
+        return worldCoordinates;
     }
 
     public PerformanceCounters counters() {

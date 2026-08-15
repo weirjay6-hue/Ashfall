@@ -10,3 +10,6 @@
   headless mode, and performance counters.
 - Pushed the milestone to GitHub `main` and preserved the pre-bootstrap state
   on `archive/pre-bootstrap-20260815`.
+- Implemented and tested Job 002 World Coordinate System with canonical world,
+  chunk, local, and cell-address types, negative-coordinate-safe conversion,
+  and configurable chunk size.

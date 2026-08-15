@@ -1,14 +1,14 @@
 kind = "web"
-previewPath = "/ashfall/"
-title = "Ashfall"
-description = "A single-character survival RPG where you explore a living world, discover danger, gather resources, fight or escape, return to town, trade, equip, and venture out again."
+previewPath = "/"
+title = "ASHFALL"
+description = "A single-character open-world RPG browser game where the world continues to change around the player, with exploration, combat, dungeons, towns, quests, trading, and save/load."
 version = "1.0.0"
 id = "artifacts/ashfall"
 router = "path"
 
 [[services]]
 name = "web"
-paths = [ "/ashfall/" ]
+paths = [ "/" ]
 localPort = 25722
 
 [services.development]
@@ -25,4 +25,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "25722"
-BASE_PATH = "/ashfall/"
+BASE_PATH = "/"

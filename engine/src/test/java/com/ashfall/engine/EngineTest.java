@@ -12,6 +12,7 @@ class EngineTest {
         Engine engine = new Engine(Configuration.defaults(7L, true));
 
         assertFalse(engine.running());
+        assertEquals(32, engine.worldCoordinates().chunkSize());
         engine.runHeadless(12);
         assertTrue(engine.running());
         assertEquals(12, engine.counters().ticks());
