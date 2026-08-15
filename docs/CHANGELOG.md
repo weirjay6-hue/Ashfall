@@ -16,3 +16,6 @@
 - Implemented and tested Job 003 World Grid with finite bounds, stable
   row-major indexing, configurable dimensions, and explicit out-of-bounds
   behavior.
+- Implemented and tested Job 004 Chunk Storage with sparse coordinate-keyed
+  chunks, fixed-size cell buffers, deterministic listing, and explicit bounds
+  validation.

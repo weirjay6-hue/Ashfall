@@ -13,6 +13,7 @@ public final class Engine {
     private final DeterministicRng rng;
     private final WorldCoordinateSystem worldCoordinates;
     private final WorldGrid worldGrid;
+    private final ChunkStore chunkStore;
     private final PerformanceCounters counters = new PerformanceCounters();
     private final FixedTimestepLoop loop;
     private boolean running;
@@ -26,6 +27,7 @@ public final class Engine {
             configuration.gridWidth(),
             configuration.gridHeight()
         );
+        this.chunkStore = new ChunkStore(worldGrid, worldCoordinates);
         this.loop = new FixedTimestepLoop(configuration.tickRate(), this::tick);
     }
 
@@ -81,6 +83,10 @@ public final class Engine {
         return worldGrid;
     }
 
+    public ChunkStore chunkStore() {
+        return chunkStore;
+    }
+
     public PerformanceCounters counters() {
         return counters;
     }
@@ -93,7 +99,7 @@ public final class Engine {
         if (!running) {
             return;
         }
-        // The grid is intentionally passive in Job 003. Generation and
-        // simulation systems will consume it in later jobs.
+        // Chunks remain passive in Job 004. Generation and simulation systems
+        // will populate and consume cell values in later jobs.
     }
 }

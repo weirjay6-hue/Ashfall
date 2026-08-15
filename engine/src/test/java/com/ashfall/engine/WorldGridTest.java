@@ -64,4 +64,24 @@ class WorldGridTest {
             () -> new WorldGrid(new WorldCoordinate(0, 0), 2, 0)
         );
     }
+
+    @Test
+    void recognizesChunksOnlyWhenTheirFullFootprintFits() {
+        WorldGrid chunkAlignedGrid = new WorldGrid(
+            new WorldCoordinate(0, 0),
+            64,
+            64
+        );
+        WorldCoordinateSystem coordinates = new WorldCoordinateSystem(32);
+
+        assertTrue(
+            chunkAlignedGrid.containsChunk(coordinates, new ChunkCoordinate(0, 0))
+        );
+        assertTrue(
+            chunkAlignedGrid.containsChunk(coordinates, new ChunkCoordinate(1, 1))
+        );
+        assertFalse(
+            chunkAlignedGrid.containsChunk(coordinates, new ChunkCoordinate(2, 0))
+        );
+    }
 }

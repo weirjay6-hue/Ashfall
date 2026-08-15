@@ -62,10 +62,30 @@ public final class WorldGrid {
         if (coordinate == null) {
             return false;
         }
+        WorldCoordinate maximum = maxExclusive();
         return coordinate.x() >= origin.x()
-            && coordinate.x() < maxExclusive().x()
+            && coordinate.x() < maximum.x()
             && coordinate.y() >= origin.y()
-            && coordinate.y() < maxExclusive().y();
+            && coordinate.y() < maximum.y();
+    }
+
+    public boolean containsChunk(
+        WorldCoordinateSystem coordinates,
+        ChunkCoordinate chunk
+    ) {
+        if (coordinates == null) {
+            throw new NullPointerException("coordinates");
+        }
+        if (chunk == null) {
+            throw new NullPointerException("chunk");
+        }
+
+        WorldCoordinate first = coordinates.chunkOrigin(chunk);
+        WorldCoordinate last = new WorldCoordinate(
+            Math.addExact(first.x(), coordinates.chunkSize() - 1L),
+            Math.addExact(first.y(), coordinates.chunkSize() - 1L)
+        );
+        return contains(first) && contains(last);
     }
 
     public int indexOf(WorldCoordinate coordinate) {
