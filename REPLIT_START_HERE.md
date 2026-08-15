@@ -24,7 +24,19 @@
     4. Do not run pnpm install, Gradle builds, asset generation, repository-wide grep, or full test suites until the active job identifies the relevant subsystem and the session has a bounded plan.
     5. Before touching source, state the current phase, active job, files that will be inspected, files that will be changed, and explicit non-goals.
 
-    If GitHub access is unavailable, ask the user to connect GitHub or provide access through Replit’s secure secrets flow. Never request or accept an access token in ordinary chat.
+    If GitHub access is unavailable, ask the user to connect GitHub or provide
+    access through Replit’s secure secrets flow. Never request or accept an
+    access token in ordinary chat.
+
+    When a secure GitHub token is available, authenticate Git operations with
+    GitHub's `x-access-token` URL form rather than an `Authorization` header:
+
+    ```bash
+    git -c url."https://x-access-token:$GGITHUB_PERSONAL_ACCESS_TOKEN@github.com/".insteadOf="https://github.com/" push origin main
+    ```
+
+    Keep the token value out of commands that print configuration, logs, or
+    remotes. Confirm the push result and remote branch after pushing.
 
     ## Current pointer
 

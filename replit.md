@@ -55,6 +55,9 @@ The Java engine is the foundation for a future persistent living world.
 - Implement one job at a time; update `CURRENT_STATE.md` and `CHANGELOG.md`
   before committing.
 - Do not replace the existing browser game with unfinished engine work.
+- For GitHub pushes, use the secure `x-access-token` URL rewrite documented in
+  `REPLIT_START_HERE.md`; do not use an `Authorization` header or expose token
+  values in logs.
 
 ## Pointers
 
