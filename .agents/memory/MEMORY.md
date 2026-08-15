@@ -1,0 +1,1 @@
+- [Imported workspace entrypoints](imported-workspace-entrypoints.md) — verify the real bundler entry before trusting typechecks on mixed JS/TS repositories.
