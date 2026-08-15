@@ -8,3 +8,5 @@
 - Implemented and tested Job 001 Engine Foundation with Java and Gradle:
   configuration, lifecycle, fixed timestep, explicit seeded RNG, logging,
   headless mode, and performance counters.
+- Pushed the milestone to GitHub `main` and preserved the pre-bootstrap state
+  on `archive/pre-bootstrap-20260815`.

@@ -36,6 +36,15 @@ Job 001 — Engine Foundation is implemented and tested. The next job is Job
 - `gradle run --args="--headless --ticks=120 --seed=ashfall-dev"`: passing.
 - Browser game checks remain available through the existing pnpm scripts.
 
+## Last commit
+
+`f512eea` — Phase 0 and Job 001 engine foundation.
+
+## GitHub push
+
+Pushed successfully to `origin/main`. The pre-bootstrap local state is also
+preserved on `origin/archive/pre-bootstrap-20260815`.
+
 ## Next job
 
 Job 002 — World Coordinate System.
