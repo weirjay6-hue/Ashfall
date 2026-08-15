@@ -71,7 +71,7 @@
 
     - The engine can produce reproducible valid world data from a seed. PASS.
     - Later streaming work can request generated chunks without changing the coordinate or storage contracts. PASS.
-    - Tests and documentation pass, followed by a reviewed commit and push. Tests and documentation PASS; commit/push pending final GitHub authorization.
+    - Tests and documentation pass, followed by a reviewed commit and push. PASS.
 
     ## Status
 
@@ -81,6 +81,5 @@
 ## Verification status
 
 The full engine test suite, headless run, and representative generation
-benchmark pass in the Java-enabled environment. The GitHub push remains pending
-because the secure GitHub integration was declined and the available token
-credentials have not authenticated successfully.
+benchmark pass in the Java-enabled environment. The completion commit is
+pushed to the GitHub `main` branch.

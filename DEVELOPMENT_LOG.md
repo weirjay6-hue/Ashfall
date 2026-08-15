@@ -30,4 +30,4 @@
   with a measured 31,578,736-byte heap delta after warm-up.
 - Updated the job record and project control files; the browser game remains
   untouched.
-- GitHub push is pending secure authorization.
+- Pushed the completion commit to the GitHub `main` branch.
